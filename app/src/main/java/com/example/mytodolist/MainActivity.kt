@@ -1,11 +1,15 @@
 package com.example.mytodolist
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FirebaseFirestore
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,6 +18,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val db = FirebaseFirestore.getInstance()
+
+        val inputItem = Item("snörre", "")
+
+        db.collection("items").add(inputItem)
 
         recyclerView = findViewById<RecyclerView>(R.id.studentList)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -32,11 +42,6 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         recyclerView.adapter?.notifyDataSetChanged()
     }
+
+
 }
-
-
-
-
-
-// 1. Gör som Davids video och se till att det fungerar!!
-// 2. Gör så att om du skiver i ett fällt och det fattas på ett ska det inte gå att lägga till.
