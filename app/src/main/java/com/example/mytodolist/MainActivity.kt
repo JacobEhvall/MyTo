@@ -4,14 +4,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var  storeTextView : EditText
+    lateinit var itemTextView : EditText
+    lateinit var buttonSave : Button
 
     lateinit var recyclerView : RecyclerView
 
@@ -21,13 +29,33 @@ class MainActivity : AppCompatActivity() {
 
         val db = FirebaseFirestore.getInstance()
 
-        val inputItem = Item("snörre", "")
+        val shoppingItems = mutableListOf<Item>()
 
-        db.collection("items").add(inputItem)
+        db.collection("items")
+            .get()
+            .addOnCompleteListener(OnCompleteListener<QuerySnapshot> { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result!!) {
+                        val newItem = document.toObject(Item::class.java)
+                        if (newItem != null) {
+                            shoppingItems.add(newItem)
+                        }
+                    }
+                    recyclerView.adapter?.notifyDataSetChanged()
+                } else {
+                    Log.w(
+                        "hej",
+                        "Error getting documents.",
+                        task.exception
+                    )
+                }
+            })
+
+
 
         recyclerView = findViewById<RecyclerView>(R.id.studentList)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = ItemRecyclerAdapter(this, DataManager.items)
+        recyclerView.adapter = ItemRecyclerAdapter(this, shoppingItems)
 
         val fab = findViewById<View>(R.id.floatingActionButton)
         fab.setOnClickListener { view ->
@@ -45,3 +73,10 @@ class MainActivity : AppCompatActivity() {
 
 
 }
+
+
+// 1. Saker läggs till men måste nu sparas i databasen!
+// 2. Item ska inte vara klickbar!
+// Kolla på video som finns där David lägger in lök!!!
+
+// läsa vad som finns ifrån Firestore
