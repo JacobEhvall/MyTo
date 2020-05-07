@@ -17,11 +17,11 @@ import com.google.firebase.firestore.QuerySnapshot
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var  storeTextView : EditText
-    lateinit var itemTextView : EditText
-    lateinit var buttonSave : Button
+    lateinit var storeTextView: EditText
+    lateinit var itemTextView: EditText
+    lateinit var buttonSave: Button
 
-    lateinit var recyclerView : RecyclerView
+    lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,10 +32,10 @@ class MainActivity : AppCompatActivity() {
         val shoppingItems = mutableListOf<Item>()
 
         db.collection("items")
-            .get()
-            .addOnCompleteListener(OnCompleteListener<QuerySnapshot> { task ->
-                if (task.isSuccessful) {
-                    for (document in task.result!!) {
+            .addSnapshotListener { snapshot, e ->
+                if (snapshot != null) {
+                    shoppingItems.clear()
+                    for (document in snapshot.documents) {
                         val newItem = document.toObject(Item::class.java)
                         if (newItem != null) {
                             shoppingItems.add(newItem)
@@ -45,11 +45,10 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     Log.w(
                         "hej",
-                        "Error getting documents.",
-                        task.exception
+                        "Error getting documents."
                     )
                 }
-            })
+            }
 
 
 
@@ -79,4 +78,3 @@ class MainActivity : AppCompatActivity() {
 // 2. Item ska inte vara klickbar!
 // Kolla på video som finns där David lägger in lök!!!
 
-// läsa vad som finns ifrån Firestore
