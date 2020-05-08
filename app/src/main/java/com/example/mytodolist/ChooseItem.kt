@@ -29,12 +29,6 @@ class ChooseItem : AppCompatActivity() {
             addNewItem()
         }
 
-        val deleteButton = findViewById<ImageButton>(R.id.delete)
-
-        //delete.setOnClickListener { view ->
-           //deleteItem()
-        //}
-
     }
     private fun addNewItem() {
 
@@ -48,20 +42,6 @@ class ChooseItem : AppCompatActivity() {
         db.collection("items").add(item)
         DataManager.items.add(item)
         finish()
-    }
-    fun deleteItem(position: Int) {
-
-        val db = FirebaseFirestore.getInstance()
-
-        val getStore = storeTextView.text.toString()
-        val insertItem = itemTextView.text.toString()
-
-        db.collection("items").document("store").delete()
-        db.collection("items").document("item").delete()
-
-        //DataManager.items.removeAt(position)
-        finish()
-
     }
 
 }

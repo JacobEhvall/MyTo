@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
                     for (document in snapshot.documents) {
                         val newItem = document.toObject(Item::class.java)
                         if (newItem != null) {
+                            newItem.id = document.id
                             shoppingItems.add(newItem)
                         }
                     }
