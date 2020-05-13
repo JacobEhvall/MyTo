@@ -15,7 +15,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 
 
+
 class MainActivity : AppCompatActivity() {
+
 
     lateinit var storeTextView: EditText
     lateinit var itemTextView: EditText
@@ -31,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         val shoppingItems = mutableListOf<Item>()
 
-        db.collection("items")
+        db.collection("items").orderBy("store")
             .addSnapshotListener { snapshot, e ->
                 if (snapshot != null) {
                     shoppingItems.clear()
@@ -53,6 +55,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
         recyclerView = findViewById<RecyclerView>(R.id.studentList)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = ItemRecyclerAdapter(this, shoppingItems)
@@ -70,8 +73,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         recyclerView.adapter?.notifyDataSetChanged()
     }
-
-
+    
 }
 
 

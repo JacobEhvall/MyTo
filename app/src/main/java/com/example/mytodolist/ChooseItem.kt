@@ -4,10 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageButton
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_choose_item.*
-import kotlinx.android.synthetic.main.student_list_view.*
 
 class ChooseItem : AppCompatActivity() {
 
@@ -23,9 +21,9 @@ class ChooseItem : AppCompatActivity() {
         storeTextView = findViewById(R.id.edit_store)
         itemTextView = findViewById(R.id.edit_item)
 
-        val saveButton = findViewById<Button>(R.id.btn_save)
+        val saveButton = findViewById<Button>(R.id.save_to_list)
 
-        btn_save.setOnClickListener { view ->
+        save_to_list.setOnClickListener { view ->
             addNewItem()
         }
 
