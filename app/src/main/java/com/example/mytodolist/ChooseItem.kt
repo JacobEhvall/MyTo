@@ -13,7 +13,6 @@ class ChooseItem : AppCompatActivity() {
     lateinit var itemTextView : EditText
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_item)

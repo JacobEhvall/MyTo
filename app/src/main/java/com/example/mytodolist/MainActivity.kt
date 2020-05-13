@@ -7,27 +7,50 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
-
-
 
 class MainActivity : AppCompatActivity() {
-
 
     lateinit var storeTextView: EditText
     lateinit var itemTextView: EditText
     lateinit var buttonSave: Button
-
     lateinit var recyclerView: RecyclerView
+
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        auth = FirebaseAuth.getInstance()
+
+        try {
+            if (auth.currentUser == null) {
+                try {
+                    auth.signInAnonymously()
+                        .addOnCompleteListener(this) { task ->
+                            if (task.isSuccessful) {
+// Sign in success, update UI with the signed-in user's information
+                                println("User created ${auth.currentUser}")
+                            } else {
+// If sign in fails, display a message to the user.
+                                println("User not created: ${task.exception}")
+                            }
+                        }.addOnFailureListener {
+                            println("Error: ${it.localizedMessage}")
+                        }
+                } catch (e: Exception) {
+                    println("Sign in error: ${e.localizedMessage}")
+                }
+            }
+        } catch (e: Exception) {
+            println("Init auth error: ${e.localizedMessage}")
+        }
+
+
 
         val db = FirebaseFirestore.getInstance()
 
@@ -53,9 +76,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-
-
-
         recyclerView = findViewById<RecyclerView>(R.id.studentList)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = ItemRecyclerAdapter(this, shoppingItems)
@@ -64,20 +84,14 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener { view ->
             val intent = Intent(this, ChooseItem::class.java)
             startActivity(intent)
-
         }
-
     }
-
     override fun onResume() {
         super.onResume()
         recyclerView.adapter?.notifyDataSetChanged()
     }
-    
+
 }
 
 
-// 1. Saker läggs till men måste nu sparas i databasen!
-// 2. Item ska inte vara klickbar!
-// Kolla på video som finns där David lägger in lök!!!
 
