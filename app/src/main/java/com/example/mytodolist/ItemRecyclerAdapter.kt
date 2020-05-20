@@ -9,11 +9,15 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.student_list_view.*
 
 class ItemRecyclerAdapter(private val context: Context, private val items: List<Item>) :
     RecyclerView.Adapter<ItemRecyclerAdapter.ViewHolder>() {
     private val layoutInflator = LayoutInflater.from(context)
+    private lateinit var auth: FirebaseAuth
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,16 +34,15 @@ class ItemRecyclerAdapter(private val context: Context, private val items: List<
         holder.itemPosition = position
 
     }
-
     fun removeItem(position: Int) {
 
         val db = FirebaseFirestore.getInstance()
 
+        val user = auth.currentUser
+
         val item = items[position]
-        val docId = item.id
-        if(docId != null){
-            db.collection("items").document(docId).delete()
-        }
+        db.collection("users").document(user!!.uid).collection("items").document(user.uid).delete()
+
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -51,15 +54,17 @@ class ItemRecyclerAdapter(private val context: Context, private val items: List<
         init {
 
             // Denna gör så att om du klickar på på en recyclerview field kommer du till en annan.
+            // Hit ska vi länka så att när användaren klickar på vy kommeer användaren till maps/kartan.
 
             itemView.setOnClickListener {
-                val intent = Intent(context, ChooseItem::class.java)
-                context.startActivity(intent)
+                    val intent = Intent(context, MapsToDo::class.java)
+                  context.startActivity(intent)
 
             }
             delete.setOnClickListener { view ->
                 removeItem(itemPosition)
                 Snackbar.make(view, "Item Removed", Snackbar.LENGTH_SHORT).show()
+
             }
 
         }

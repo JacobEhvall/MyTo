@@ -1,16 +1,21 @@
 package com.example.mytodolist
 
+import android.content.ContentProviderClient
 import android.content.Intent
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import android.Manifest
+import android.content.ContentValues
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         auth = FirebaseAuth.getInstance()
 
@@ -55,8 +61,9 @@ class MainActivity : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
 
         val shoppingItems = mutableListOf<Item>()
+        val user = auth.currentUser
 
-        db.collection("items").orderBy("store")
+        db.collection("users").document(user!!.uid).collection("items").orderBy("store")
             .addSnapshotListener { snapshot, e ->
                 if (snapshot != null) {
                     shoppingItems.clear()
@@ -85,6 +92,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, ChooseItem::class.java)
             startActivity(intent)
         }
+
     }
     override fun onResume() {
         super.onResume()
@@ -92,6 +100,17 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

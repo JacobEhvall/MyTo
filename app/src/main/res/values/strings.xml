@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MyToDoList</string>
+    <string name="title_activity_maps_to_do">Map</string>
+    <string name="title_activity_map">Map</string>
 </resources>
