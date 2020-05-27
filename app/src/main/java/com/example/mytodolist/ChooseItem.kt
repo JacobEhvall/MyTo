@@ -56,12 +56,12 @@ class ChooseItem : AppCompatActivity() {
         val getStore = storeTextView.text.toString()
         val insertItem = itemTextView.text.toString()
 
-        if(user == null)
+        if(getStore.isEmpty() || insertItem.isEmpty())
             return
 
         val item = Item(getStore, insertItem)
         val ref =
-        db.collection("users").document(user.uid).collection("items").document()
+        db.collection("users").document(user!!.uid).collection("items").document()
         item.id = ref.id
         ref.set(item)
         //DataManager.items.add(item) // läggdes till i lista men sparas inte i databasen när appen avslutas.

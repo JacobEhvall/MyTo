@@ -1,17 +1,28 @@
 package com.example.mytodolist
 
+import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.Button
+import android.widget.Toast
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
 
-class MapsToDo : AppCompatActivity(), OnMapReadyCallback {
+
+class MapsToDo : AppCompatActivity(), OnMapReadyCallback{
 
     private lateinit var mMap: GoogleMap
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,21 +31,33 @@ class MapsToDo : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.pin_on_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-    }
 
+    }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-
         val sthlm = LatLng(59.3, 18.0)
-        //val marker = mMap.addMarker()
-        //MarkerOptions()
-        //.position(sthlm)
-        //.title("Shopping Time"))
-        //marker.showInfoWindow()
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sthlm, 12.0f))
 
+        mMap.setOnMapClickListener {
+            mMap.clear() // Ta bort denna för att det ska gå att lägga till flera markers
+            mMap.addMarker(MarkerOptions().position(it))
 
+        }
+
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_save) {
+            Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu_save, menu)
+        return true
 
     }
 

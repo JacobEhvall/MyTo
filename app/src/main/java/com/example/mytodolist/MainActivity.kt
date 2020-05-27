@@ -16,6 +16,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import android.Manifest
 import android.content.ContentValues
+import android.view.Menu
+import android.view.MenuInflater
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -63,7 +66,8 @@ class MainActivity : AppCompatActivity() {
         val shoppingItems = mutableListOf<Item>()
         val user = auth.currentUser
 
-        db.collection("users").document(user!!.uid).collection("items").orderBy("store")
+
+            db.collection("users").document(user!!.uid).collection("items").orderBy("store")
             .addSnapshotListener { snapshot, e ->
                 if (snapshot != null) {
                     shoppingItems.clear()
