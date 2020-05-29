@@ -19,10 +19,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 
 
-class MapsToDo : AppCompatActivity(), OnMapReadyCallback{
+class MapsToDo : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
-    var latLng : LatLng? = null
+    var latLng: LatLng? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,16 +42,17 @@ class MapsToDo : AppCompatActivity(), OnMapReadyCallback{
 
         mMap.setOnMapClickListener {
             mMap.clear() // Ta bort denna för att det ska gå att lägga till flera markers
-            latLng = MarkerOptions().position
+            latLng = it
             println("!!!hej $latLng")
             mMap.addMarker(MarkerOptions().position(it))
 
         }
 
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_save) {
-            Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show()
             val intent = Intent()
             intent.putExtra("latitude", latLng?.latitude)
             intent.putExtra("longitude", latLng?.longitude)
@@ -60,7 +61,7 @@ class MapsToDo : AppCompatActivity(), OnMapReadyCallback{
 
 
 
-            setResult(1,intent)
+            setResult(1, intent)
             finish()
         }
         return super.onOptionsItemSelected(item)
@@ -71,5 +72,7 @@ class MapsToDo : AppCompatActivity(), OnMapReadyCallback{
         inflater.inflate(R.menu.menu_save, menu)
         return true
     }
+
 }
+
 

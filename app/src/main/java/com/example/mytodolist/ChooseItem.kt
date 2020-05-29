@@ -21,7 +21,6 @@ class ChooseItem : AppCompatActivity() {
     lateinit var db : FirebaseFirestore
     lateinit var  storeTextView : EditText
     lateinit var itemTextView : EditText
-    lateinit var setButtonPin : Button
     private lateinit var auth: FirebaseAuth
 
 
@@ -70,16 +69,10 @@ class ChooseItem : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        var latitude = data?.getStringExtra("latitude")
-        var longitude = data?.getStringExtra("longitude")
-        println("latitude $latitude")
-
+        var latitude = data?.getDoubleExtra("latitude",1.0)
+        var longitude = data?.getDoubleExtra("longitude",1.0)
+        println("latitudeeee $latitude")
 
     }
-
-
-
-
-
 }
 
