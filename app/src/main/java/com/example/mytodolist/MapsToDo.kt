@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth
 class MapsToDo : AppCompatActivity(), OnMapReadyCallback{
 
     private lateinit var mMap: GoogleMap
+    var latLng : LatLng? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +42,8 @@ class MapsToDo : AppCompatActivity(), OnMapReadyCallback{
 
         mMap.setOnMapClickListener {
             mMap.clear() // Ta bort denna för att det ska gå att lägga till flera markers
+            latLng = MarkerOptions().position
+            println("!!!hej $latLng")
             mMap.addMarker(MarkerOptions().position(it))
 
         }
@@ -49,7 +52,16 @@ class MapsToDo : AppCompatActivity(), OnMapReadyCallback{
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_save) {
             Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, MainActivity::class.java))
+            val intent = Intent()
+            intent.putExtra("latitude", latLng?.latitude)
+            intent.putExtra("longitude", latLng?.longitude)
+            println("latitude $latLng")
+            println("longitude $latLng")
+
+
+
+            setResult(1,intent)
+            finish()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -58,9 +70,6 @@ class MapsToDo : AppCompatActivity(), OnMapReadyCallback{
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.menu_save, menu)
         return true
-
     }
-
-
 }
 

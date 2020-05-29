@@ -18,6 +18,7 @@ import android.Manifest
 import android.content.ContentValues
 import android.view.Menu
 import android.view.MenuInflater
+import com.google.android.gms.maps.model.LatLng
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,13 +27,13 @@ class MainActivity : AppCompatActivity() {
     lateinit var itemTextView: EditText
     lateinit var buttonSave: Button
     lateinit var recyclerView: RecyclerView
+    var latLng : LatLng? = null
 
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
 
         auth = FirebaseAuth.getInstance()
 
@@ -60,14 +61,13 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
         val db = FirebaseFirestore.getInstance()
 
         val shoppingItems = mutableListOf<Item>()
         val user = auth.currentUser
 
 
-            db.collection("users").document(user!!.uid).collection("items").orderBy("store")
+        db.collection("users").document(user!!.uid).collection("items").orderBy("store")
             .addSnapshotListener { snapshot, e ->
                 if (snapshot != null) {
                     shoppingItems.clear()
@@ -98,6 +98,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
     override fun onResume() {
         super.onResume()
         recyclerView.adapter?.notifyDataSetChanged()

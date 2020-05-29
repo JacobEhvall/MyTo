@@ -45,9 +45,8 @@ class ChooseItem : AppCompatActivity() {
         val pinOnMap = findViewById<Button>(R.id.pin_on_map)
         pinOnMap.setOnClickListener { view ->
             val intent = Intent(this, MapsToDo::class.java)
-            startActivity(intent)
+            startActivityForResult(intent,1)
         }
-
 
     }
     private fun addNewItem() {
@@ -67,6 +66,18 @@ class ChooseItem : AppCompatActivity() {
         //DataManager.items.add(item) // läggdes till i lista men sparas inte i databasen när appen avslutas.
         finish()
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        var latitude = data?.getStringExtra("latitude")
+        var longitude = data?.getStringExtra("longitude")
+        println("latitude $latitude")
+
+
+    }
+
+
 
 
 
