@@ -57,8 +57,8 @@ class ItemRecyclerAdapter(private val context: Context, private val items: List<
             // Hit ska vi länka så att när användaren klickar på vy kommeer användaren till maps/kartan.
 
             itemView.setOnClickListener {
-                    val intent = Intent(context, MapsToDo::class.java)
-                  context.startActivity(intent)
+                val intent = Intent(context, WatchPin::class.java)
+                context.startActivity(intent)
 
             }
             delete.setOnClickListener { view ->
@@ -71,4 +71,8 @@ class ItemRecyclerAdapter(private val context: Context, private val items: List<
     }
 }
 
-
+//1. skapa en ny maps activity
+//2. rad 60 och 61 ska du starat den nya mapsaktivitetten i stället
+//3. skicka med latitude och longitude frpn denna adapter till den nya aktiviteten
+//          använd putExtra för att skicak med
+//4. i din nya maps activity ska du ta emot lat och lng och göra en println

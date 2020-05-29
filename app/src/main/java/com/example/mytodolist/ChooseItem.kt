@@ -22,6 +22,9 @@ class ChooseItem : AppCompatActivity() {
     lateinit var  storeTextView : EditText
     lateinit var itemTextView : EditText
     private lateinit var auth: FirebaseAuth
+    var lat : Double? = null
+    var lng : Double? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,9 +60,8 @@ class ChooseItem : AppCompatActivity() {
         if(getStore.isEmpty() || insertItem.isEmpty())
             return
 
-        val item = Item(getStore, insertItem)
-        val ref =
-        db.collection("users").document(user!!.uid).collection("items").document()
+        val item = Item(getStore, insertItem, lat, lng)
+        val ref = db.collection("users").document(user!!.uid).collection("items").document()
         item.id = ref.id
         ref.set(item)
         //DataManager.items.add(item) // läggdes till i lista men sparas inte i databasen när appen avslutas.
@@ -69,9 +71,9 @@ class ChooseItem : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        var latitude = data?.getDoubleExtra("latitude",1.0)
-        var longitude = data?.getDoubleExtra("longitude",1.0)
-        println("latitudeeee $latitude")
+        lat = data?.getDoubleExtra("latitude",1.0)
+        lng = data?.getDoubleExtra("longitude",1.0)
+
 
     }
 }

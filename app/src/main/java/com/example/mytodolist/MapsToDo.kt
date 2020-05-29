@@ -43,7 +43,6 @@ class MapsToDo : AppCompatActivity(), OnMapReadyCallback {
         mMap.setOnMapClickListener {
             mMap.clear() // Ta bort denna för att det ska gå att lägga till flera markers
             latLng = it
-            println("!!!hej $latLng")
             mMap.addMarker(MarkerOptions().position(it))
 
         }
@@ -56,10 +55,6 @@ class MapsToDo : AppCompatActivity(), OnMapReadyCallback {
             val intent = Intent()
             intent.putExtra("latitude", latLng?.latitude)
             intent.putExtra("longitude", latLng?.longitude)
-            println("latitude $latLng")
-            println("longitude $latLng")
-
-
 
             setResult(1, intent)
             finish()
