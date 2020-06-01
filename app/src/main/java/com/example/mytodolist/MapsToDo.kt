@@ -41,7 +41,7 @@ class MapsToDo : AppCompatActivity(), OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sthlm, 12.0f))
 
         mMap.setOnMapClickListener {
-            mMap.clear() // Ta bort denna för att det ska gå att lägga till flera markers
+            //mMap.clear() // Ta bort denna för att det ska gå att lägga till flera markers
             latLng = it
             mMap.addMarker(MarkerOptions().position(it))
 
