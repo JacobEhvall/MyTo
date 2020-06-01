@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -17,6 +18,8 @@ class ItemRecyclerAdapter(private val context: Context, private val items: List<
     RecyclerView.Adapter<ItemRecyclerAdapter.ViewHolder>() {
     private val layoutInflator = LayoutInflater.from(context)
     private lateinit var auth: FirebaseAuth
+    var latLng: LatLng? = null
+
 
 
 
@@ -58,6 +61,11 @@ class ItemRecyclerAdapter(private val context: Context, private val items: List<
 
             itemView.setOnClickListener {
                 val intent = Intent(context, WatchPin::class.java)
+                // Här ska kordinaterna skickas med till aktiviteten. För att göra det
+                // använd putextra!
+                var onMap = items[itemPosition]
+                intent.putExtra("latitude",onMap.lat)
+                intent.putExtra("longitude",onMap.lng)
                 context.startActivity(intent)
 
             }
@@ -71,8 +79,8 @@ class ItemRecyclerAdapter(private val context: Context, private val items: List<
     }
 }
 
-//1. skapa en ny maps activity
-//2. rad 60 och 61 ska du starat den nya mapsaktivitetten i stället
+//1. skapa en ny maps activity KLAR
+//2. rad 60 och 61 ska du starat den nya mapsaktivitetten i stället KLAR
 //3. skicka med latitude och longitude frpn denna adapter till den nya aktiviteten
-//          använd putExtra för att skicak med
+//          använd putExtra för att skicak med KLAR
 //4. i din nya maps activity ska du ta emot lat och lng och göra en println
