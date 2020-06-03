@@ -20,11 +20,11 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 class MapsToDo : AppCompatActivity(), OnMapReadyCallback {
-
+    // Tar in Goolge maps och deklarerar en latitude.
     private lateinit var mMap: GoogleMap
     var latLng: LatLng? = null
 
-
+    // Går till pin on map activity.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps_to_do)
@@ -34,12 +34,13 @@ class MapsToDo : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
     }
-
+    // Google map används och är på stockholm.
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         val sthlm = LatLng(59.3, 18.0)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sthlm, 12.0f))
 
+        // Här läggs markör till.
         mMap.setOnMapClickListener {
             mMap.clear() // Ta bort denna för att det ska gå att lägga till flera markers
             latLng = it
@@ -47,7 +48,7 @@ class MapsToDo : AppCompatActivity(), OnMapReadyCallback {
         }
 
     }
-
+    // Skapa en button för att spara pin:en/markör och skicka med en long och lat siffra.
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_save) {
             Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show()

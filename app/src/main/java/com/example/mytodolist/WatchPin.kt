@@ -34,8 +34,7 @@ class WatchPin : AppCompatActivity(), OnMapReadyCallback {
 
         lat = intent?.getDoubleExtra("latitude", 1.0)
         lng = intent?.getDoubleExtra("longitude", 1.0)
-       // println("!! ${lat},${lng}")
-        // Ta emot kordinater med getExtra. Ta emot som double!
+        // Ta emot kordinater med getExtra. Tas emot som double!
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

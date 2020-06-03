@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+       // Skapar en instance och tar in authentication anonym.
         auth = FirebaseAuth.getInstance()
 
         try {
@@ -60,13 +60,14 @@ class MainActivity : AppCompatActivity() {
             println("Init auth error: ${e.localizedMessage}")
         }
 
-
+        // Tar in Firebase och skapr ett objekt för en användare och en shoppinglista.
         val db = FirebaseFirestore.getInstance()
 
         val shoppingItems = mutableListOf<Item>()
         val user = auth.currentUser
 
-
+        // Våran collection i Firebase har en users med ett uid som har en collection av items som skall sorteras i bokstavsordning efter affären.
+        //Vi kollar om shoppinglistan och kan ta bort, loopar genom listan och lägger till items.
         db.collection("users").document(user!!.uid).collection("items").orderBy("store")
             .addSnapshotListener { snapshot, e ->
                 if (snapshot != null) {
@@ -86,7 +87,7 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
             }
-
+        // Skapar en knapp letar efter dess id:en och går vidare till en ny aktivitet.
         recyclerView = findViewById<RecyclerView>(R.id.studentList)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = ItemRecyclerAdapter(this, shoppingItems)
@@ -98,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
+    // Uppdaterar adapter/recyclerview:n.
     override fun onResume() {
         super.onResume()
         recyclerView.adapter?.notifyDataSetChanged()

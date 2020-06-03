@@ -20,9 +20,6 @@ class ItemRecyclerAdapter(private val context: Context, private val items: List<
     private lateinit var auth: FirebaseAuth
     var latLng: LatLng? = null
 
-
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = layoutInflator.inflate(R.layout.student_list_view, parent, false)
         return ViewHolder(itemView)
@@ -38,13 +35,15 @@ class ItemRecyclerAdapter(private val context: Context, private val items: List<
 
     }
     fun removeItem(position: Int) {
-
+        auth = FirebaseAuth.getInstance()
+        
         val db = FirebaseFirestore.getInstance()
 
         val user = auth.currentUser
 
         val item = items[position]
-        db.collection("users").document(user!!.uid).collection("items").document(user.uid).delete()
+        //println("!! ${item.id}")
+        db.collection("users").document(user!!.uid).collection("items").document(item.id!!).delete()
 
     }
 
@@ -57,12 +56,12 @@ class ItemRecyclerAdapter(private val context: Context, private val items: List<
         init {
 
             // Denna gör så att om du klickar på på en recyclerview field kommer du till en annan.
-            // Hit ska vi länka så att när användaren klickar på vy kommeer användaren till maps/kartan.
+            // Hit ska vi länka så att när användaren klickar på vy kommer användaren till maps/kartan.
 
+
+            // Här ska kordinaterna skickas med till aktiviteten. För att göra det används putextra.
             itemView.setOnClickListener {
                 val intent = Intent(context, WatchPin::class.java)
-                // Här ska kordinaterna skickas med till aktiviteten. För att göra det
-                // använd putextra!
                 var onMap = items[itemPosition]
                 intent.putExtra("latitude",onMap.lat)
                 intent.putExtra("longitude",onMap.lng)
@@ -70,8 +69,10 @@ class ItemRecyclerAdapter(private val context: Context, private val items: List<
 
             }
             delete.setOnClickListener { view ->
+                auth = FirebaseAuth.getInstance()
                 removeItem(itemPosition)
                 Snackbar.make(view, "Item Removed", Snackbar.LENGTH_SHORT).show()
+                println("delete ${removeItem(itemPosition)}")
 
             }
 
@@ -79,8 +80,3 @@ class ItemRecyclerAdapter(private val context: Context, private val items: List<
     }
 }
 
-//1. skapa en ny maps activity KLAR
-//2. rad 60 och 61 ska du starat den nya mapsaktivitetten i stället KLAR
-//3. skicka med latitude och longitude frpn denna adapter till den nya aktiviteten
-//          använd putExtra för att skicak med KLAR
-//4. i din nya maps activity ska du ta emot lat och lng och göra en println
