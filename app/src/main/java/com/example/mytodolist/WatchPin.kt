@@ -15,7 +15,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
-
+// Denna class, WatchPin kollar du på kartan var din pin finns utsatt på Google maps.
 class WatchPin : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap

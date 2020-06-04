@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-       // Skapar en instance och tar in authentication anonym.
+       // Skapar en instance och tar in authentication anonym och kollar om vi har en user.
         auth = FirebaseAuth.getInstance()
 
         try {
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
             println("Init auth error: ${e.localizedMessage}")
         }
 
-        // Tar in Firebase och skapr ett objekt för en användare och en shoppinglista.
+        // Tar in Firebase och skapar ett objekt för en användare och en shoppinglista.
         val db = FirebaseFirestore.getInstance()
 
         val shoppingItems = mutableListOf<Item>()

@@ -27,7 +27,7 @@ class ChooseItem : AppCompatActivity() {
     var lng : Double? = null
 
 
-    // Tar in Firebase och letar reda på dess olika id:en.
+    // Tar in Firebase och  auth objekt. Tar in  rätt på inputfällt  och letar reda på dess olika id:en.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_item)
@@ -38,16 +38,16 @@ class ChooseItem : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
 
-
+        // Skapar en save - knapp och letar efter det satta id:et.
         val saveButton = findViewById<Button>(R.id.save_to_list)
 
-        //id:et för att lägga till en vara och kallar på funktionen.
+        //Sätter en listener, på save knappen och kallar på funktionen addNewItem som  vi kallar på och lägger till en vara.
         save_to_list.setOnClickListener { view ->
             addNewItem()
         }
 
-        // Skapar en variabel och leter efter dess id
-        //startar sedan ett ny intent och går till en ny aktivitet.
+        // Skapar en variabel för en knapp och sätter ett id som vi letar upp
+        // och sätter en listener. Därefter skapar vi ett intent för att gå vidare till en ny aktivitet i detta fall MapsToDo.
         val pinOnMap = findViewById<Button>(R.id.pin_on_map)
         pinOnMap.setOnClickListener { view ->
             val intent = Intent(this, MapsToDo::class.java)
@@ -55,6 +55,7 @@ class ChooseItem : AppCompatActivity() {
         }
 
     } // funktion som lägger till en ny vara och kollar att inputfällten inte är tomma.
+    // Skapar variablar för id:ena och ser till att de är strängar vi tar in.
     private fun addNewItem() {
 
         val user = auth.currentUser
@@ -64,6 +65,7 @@ class ChooseItem : AppCompatActivity() {
         if(getStore.isEmpty() || insertItem.isEmpty())
             return
 
+        // En item tar in en store och ett item men också lat och lng där vi ska köpa vår item/vara.
         val item = Item(getStore, insertItem, lat, lng)
         val ref = db.collection("users").document(user!!.uid).collection("items").document()
         item.id = ref.id
@@ -71,7 +73,7 @@ class ChooseItem : AppCompatActivity() {
         //DataManager.items.add(item) // läggdes till i lista men sparas inte i databasen när appen avslutas.
         finish()
     }
-    // Hämtar in longitude och latitude efter vad man har at på kartan.
+    // Hämtar in longitude och latitude efter vad man har på kartan.
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 class MapsToDo : AppCompatActivity(), OnMapReadyCallback {
-    // Tar in Goolge maps och deklarerar en latitude.
+    // Tar in Google maps och deklarerar en latLng variabel.
     private lateinit var mMap: GoogleMap
     var latLng: LatLng? = null
 
@@ -48,7 +48,7 @@ class MapsToDo : AppCompatActivity(), OnMapReadyCallback {
         }
 
     }
-    // Skapa en button för att spara pin:en/markör och skicka med en long och lat siffra.
+    // Skapar knappen save för att spara pin:en/markör och skicka med en long och lat koordinat.
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_save) {
             Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show()

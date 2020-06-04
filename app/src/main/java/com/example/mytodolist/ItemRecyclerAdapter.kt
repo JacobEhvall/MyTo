@@ -20,6 +20,8 @@ class ItemRecyclerAdapter(private val context: Context, private val items: List<
     private lateinit var auth: FirebaseAuth
     var latLng: LatLng? = null
 
+    // Tre override funktioner som behövs för att kunna ärva av Recyclerview.
+    // onCreateViewHolder när vi skapar en View, GetItemCount: returnerar hur lång listan är, Binder ihop datan i view:n.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = layoutInflator.inflate(R.layout.student_list_view, parent, false)
         return ViewHolder(itemView)
@@ -33,7 +35,7 @@ class ItemRecyclerAdapter(private val context: Context, private val items: List<
         holder.textstoreName.text = getItem.item
         holder.itemPosition = position
 
-    }
+    } // funktion som tar bort en item, vilket är beroende på en position och kopplar ihop det med Firebase.
     fun removeItem(position: Int) {
         auth = FirebaseAuth.getInstance()
         
@@ -46,7 +48,7 @@ class ItemRecyclerAdapter(private val context: Context, private val items: List<
         db.collection("users").document(user!!.uid).collection("items").document(item.id!!).delete()
 
     }
-
+    // Class som endast kommer användas i denna class och inte finnas tillgänglig någon annanstans.
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemName = itemView.findViewById<TextView>(R.id.item_name)
         val textstoreName = itemView.findViewById<TextView>(R.id.text_storeName)
@@ -59,7 +61,7 @@ class ItemRecyclerAdapter(private val context: Context, private val items: List<
             // Hit ska vi länka så att när användaren klickar på vy kommer användaren till maps/kartan.
 
 
-            // Här ska kordinaterna skickas med till aktiviteten. För att göra det används putextra.
+            // Här ska också kordinaterna skickas med till aktiviteten, long och lat.För att göra det används putextra. Härifrån går vi också till en ny aktivitet WatchPin.
             itemView.setOnClickListener {
                 val intent = Intent(context, WatchPin::class.java)
                 var onMap = items[itemPosition]
@@ -67,7 +69,7 @@ class ItemRecyclerAdapter(private val context: Context, private val items: List<
                 intent.putExtra("longitude",onMap.lng)
                 context.startActivity(intent)
 
-            }
+            } // id:et för att ta bort en item sätts med en listener och tar bort item. En snackbar bekräftar att item:et har tagits bort.
             delete.setOnClickListener { view ->
                 auth = FirebaseAuth.getInstance()
                 removeItem(itemPosition)
